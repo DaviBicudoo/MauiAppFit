@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MauiAppFit.Models
 {
-    internal class Activity
+    public class Activity
     {
     }
 }
