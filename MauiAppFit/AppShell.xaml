@@ -4,20 +4,27 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:MauiAppFit"
-    Shell.FlyoutBehavior="Flyout"
+    Shell.FlyoutBehavior="Disabled"
     xmlns:Views="clr-namespace:MauiAppFit.Views"
     Title="MauiAppFit">
 
-    <Tab Title="My Activity" Icon="myExercises.png" Route="MyActivity">
-        <ShellContent>
-            <Views:ActivityList Title="My Activities" />
-        </ShellContent>
-    </Tab>
-    <Tab Title="About" Icon="about.png">
-        <ShellContent>
-            <Views:About Title="About app" />
-        </ShellContent>
-    </Tab>
+    <TabBar>
+        <Tab Title="New Activity" Icon="activity.png" Route="ActivityRegister">
+            <ShellContent>
+                <Views:ActivityRegister Title="Activity Register" />
+            </ShellContent>
+        </Tab>
+        <Tab Title="My Activities" Icon="my_exercises.png" Route="ActivityList">
+            <ShellContent>
+                <Views:ActivityList Title="My Activities" />
+            </ShellContent>
+        </Tab>
+        <Tab Title="About" Icon="About.png" Route="about">
+            <ShellContent>
+                <Views:About Title="About us" />
+            </ShellContent>
+        </Tab>
+    </TabBar>
 
     <ShellContent
         Title="Home"
