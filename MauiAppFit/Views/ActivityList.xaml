@@ -2,11 +2,55 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiAppFit.Views.ActivityList"
-             Title="ActivityList">
+             Title="ActivityList"
+             x:Name="MyActivityPage">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Update"
+                     IconImageSource="{OnPlatform Android=refresh24}"
+                     Command="{Binding UpdateList}"
+                     Order="Primary" />
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Content>
+        <StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <SearchBar Placeholder="Search for description" Text="{Binding SearchParameter}" />
+                <Button Text="Search" Command="{Binding Search}" />
+            </StackLayout>
+
+            <RefreshView IsRefreshing="{Binding IsUpdating, Mode=OneWay}" Command="{Binding UpdateList}">
+                <ListView ItemSource="{Binding ActivityList}">
+                    <ListView.Header>
+                        <Grid RowDefinitions="*, *, *">
+                            <Label Grid.Row="0" Grid.Column="0" Text="ID" />
+                            <Label Grid.Row="0" Grid.Column="1" Text="Description" />
+                            <Label Grid.Row="0" Grid.Column="2" Text="Date" />
+                        </Grid>
+                    </ListView.Header>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <ViewCell.ContextActions>
+                                    <MenuItem Text="Details" Command="{Binding Source={x:Reference Page}, Path=BindingContext.OpenActivityDetails}" 
+                                              CommandParameter="{Binding ID}" />
+                                    <MenuItem Text="Delete" Command="{Binding Source={x:Reference Page}, Path=BindingContext.Remove}" 
+                                              CommandParameter="{Binding ID}" />
+                                </ViewCell.ContextActions>
+                                <Grid RowDefinitions="Auto" ColumnDefinitions="*, *, *">
+                                    <Label Grid.Row="0" Grid.Column="0" Text="{Binding ID}" />
+                                    <Label Grid.Row="0" Grid.Column="1" Text="{Binding Description}" />
+                                    <Label Grid.Row="0" Grid.Column="2" Text="{Binding Data, StringFormat='{}{0:dd/MM/yyyy'}" />
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </RefreshView>
+        </StackLayout>
+    </ContentPage.Content>
+    
     <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+        
     </VerticalStackLayout>
 </ContentPage>
