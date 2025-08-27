@@ -20,7 +20,7 @@
             </StackLayout>
 
             <RefreshView IsRefreshing="{Binding IsUpdating, Mode=OneWay}" Command="{Binding UpdateList}">
-                <ListView ItemSource="{Binding ActivityList}">
+                <ListView ItemsSource="{Binding ActivityList}">
                     <ListView.Header>
                         <Grid RowDefinitions="*, *, *">
                             <Label Grid.Row="0" Grid.Column="0" Text="ID" />
@@ -49,8 +49,4 @@
             </RefreshView>
         </StackLayout>
     </ContentPage.Content>
-    
-    <VerticalStackLayout>
-        
-    </VerticalStackLayout>
 </ContentPage>
