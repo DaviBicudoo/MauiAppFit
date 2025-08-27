@@ -3,10 +3,31 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiAppFit.Views.ActivityRegister"
              Title="ActivityRegister">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+    
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Nova" Order="Primary" Command="{Binding NewActivity}" />
+
+        <ToolbarItem Text="Salvar"
+                     IconImageSource="{OnPlatform Android=salvar24, UWP=Assets/g}"
+                     Order="Primary"
+                     Command="{Binding SaveActivity}"/>
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Content>
+        <StackLayout Padding="10">
+            <Label Text="{Binding Id}" />
+
+            <Label Text="Descrição:" />
+            <Entry Text="{Binding Description}" Placeholder="How was your activity?" />
+
+            <Label Text="Data:" />
+            <DatePicker Format="dd/MM/yyyy" Date="{Binding Date}" />
+
+            <Label Text="Peso:" />
+            <Entry Text="{Binding  Weights}" Keyboard="Numeric" Placeholder="How much weights?" />
+
+            <Label Text="Observações:" />
+            <Entry Text="{Binding Observations}" Placeholder="Something to remember?" />
+        </StackLayout>
+    </ContentPage.Content>
 </ContentPage>
