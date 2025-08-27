@@ -1,23 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Windows.Input;
-using Android.Views;
+using MauiAppFit.Models;
 
 namespace MauiAppFit.ViewModels
 {
     [QueryProperty("GetQueryID", "ID_Parameter")]
     public class ActivityRegisterViewModel : INotifyPropertyChanged
     {
-        public event PropertyChangingEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
 
         string description, observations;
         int id;
         DateTime date;
-        double? weights;
+        double? weight;
 
         public string GetQueryID
         {
@@ -70,12 +65,12 @@ namespace MauiAppFit.ViewModels
             }
         }
 
-        public double? Weights
+        public double? Weight
         {
-            get => weights;
+            get => weight;
             set
             {
-                weights = value;
+                weight = value;
                 PropertyChanged(this, new PropertyChangedEventArgs("Weights"));
             }
         }
@@ -87,8 +82,66 @@ namespace MauiAppFit.ViewModels
                 Id = 0;
                 Description = String.Empty;
                 Date = DateTime.Now;
-                Weights = null;
+                Weight = null;
                 Observations = string.Empty;
+            });
+        }
+
+        public ICommand SaveActivity
+        {
+            get => new Command(async () =>
+            {
+                try
+                {
+                    Activity model = new Activity()
+                    {
+                        Description = this.Description,
+                        Date = this.Date,
+                        Weight = this.Weight,
+                        Observations = this.Observations
+                    };
+
+                    if (this.Id == 0)
+                    {
+                        await App.Database.Insert(model);
+                    }
+                    else
+                    {
+                        model.ID = this.Id;
+
+                        await App.Database.Update(model);
+                    }
+
+                    await Application.Current.MainPage.DisplayAlert("Saved", "Saved exercise", "OK");
+
+                    await Shell.Current.GoToAsync("//MyActivities");
+
+                }
+                catch (Exception ex)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Ops", ex.Message, "OK");
+                }
+            });
+        }
+
+        public ICommand ShowActivity
+        {
+            get => new Command<int>(async (int id) =>
+            {
+                try
+                {
+                    Activity model = await App.Database.GetById(id);
+
+                    this.Id = model.ID;
+                    this.Description = model.Description;
+                    this.Weight = model.Weight;
+                    this.Date = model.Date;
+                    this.Observations = model.Observations;
+                }
+                catch (Exception ex)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Ops", ex.Message, "OK");
+                }
             });
         }
     }
